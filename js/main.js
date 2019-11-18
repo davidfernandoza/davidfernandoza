@@ -8,7 +8,6 @@ let altura = cabezera.offsetHeight
 
 window.addEventListener('scroll', () => {
 
-	console.log(screen.width);
 	// solo se usa cuando es una resolucion menor a 1024
 	if (screen.width < 1024) {
 
