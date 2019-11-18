@@ -296,11 +296,11 @@
 			<a href="mailto:davidfernandoza@hotmail.com" class="icon-mail" target="_blank"><strong> davidfernandoza@hotmail.com</strong></a>
 		</div>
 
-		<form class="formulario" action="https://formspree.io/xjvvjyqo" method="post" target="_blank">
-			<input type="text" name="name" placeholder="Nombre" required>
-			<input type="email" name="_replyto" placeholder="Email" required>
-			<textarea name="message" rows="8" cols="20" placeholder="Mensaje" required></textarea>
-			<input type="submit" name="" value="Enviar">
+		<form id="contactForm" class="formulario" action="https://formspree.io/xjvvjyqo" method="post" target="_blank" ontar="return limpiar()">
+			<input type="text" name="name" placeholder="Nombre" required >
+			<input type="email" name="_replyto" placeholder="Email" required >
+			<textarea name="message" rows="8" cols="20" placeholder="Mensaje" required ></textarea>
+			<input type="submit" id="send" value="Enviar">
 		</form>
 
 	</footer>

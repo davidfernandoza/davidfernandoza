@@ -3,8 +3,12 @@ let contenido = document.getElementById('contenido')
 let cabezera = document.getElementById('header')
 let menu = document.getElementById('menu')
 let altura = cabezera.offsetHeight
+let enviar = document.getElementById('send')
 
-
+// reset de formulario
+enviar.addEventListener('click', ()=>{
+	setTimeout('document.getElementById("contactForm").reset()',2000)
+})
 
 window.addEventListener('scroll', () => {
 
