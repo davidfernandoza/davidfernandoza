@@ -461,18 +461,18 @@ span[aria-label="Next"]:hover{
     margin-bottom: 20px;
   }
   header figure img {
-    width: 250px;
+    width: 200px;
   }
 
   h1{
-    font-size: 35px;
-    line-height: 35px;
+    font-size: 28px;
+    line-height: 28px;
     margin-right: 10px;
   }
 
   header p{
     padding: 0;
-    font-size: 28px;
+    font-size: 23px;
   }
 
   .irTwitter{
@@ -481,8 +481,8 @@ span[aria-label="Next"]:hover{
   }
 
   .menu__item{
-    padding: 15px;
-    font-size: 30px;
+    padding: 10px;
+    font-size: 25px;
   }
   .alingLeft{
     text-align: left;
