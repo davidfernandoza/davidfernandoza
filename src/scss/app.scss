@@ -1,0 +1,32 @@
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+@import 'datatables.net-bs5';
+
+// Icons
+@import '~/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~/@fortawesome/fontawesome-free/scss/solid';
+
+// Components
+@import 'sidebar';
+
+*{
+	box-sizing: border-box;
+}
+
+.app{
+	min-height: 100vh;
+}
+
+.main{
+	background-color: rgb(216, 214, 214);
+}
+
+.body{
+	height: 100vh;
+	overflow-y: auto;
+}
+
+.dt-search{
+	margin-bottom: 15px;
+}
+

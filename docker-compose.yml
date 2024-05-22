@@ -1,0 +1,17 @@
+services:
+    davidfernandoza:
+        image: node:18.19.1
+        container_name: 'davidfernandoza'
+        ports:
+            - '5002:5002'
+        volumes:
+            - '.:/app'
+        networks:
+            - local_net
+        working_dir: /app
+        command: npm run watch
+networks:
+    local_net:
+        name: local_net
+        driver: bridge
+        external: true
