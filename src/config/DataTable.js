@@ -1,6 +1,5 @@
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
-import 'datatables.net-responsive'
 import 'datatables.net-bs5'
 import 'datatables.net-buttons/js/buttons.html5.mjs'
 import Buttons from 'datatables.net-buttons-bs5'

@@ -1,66 +1,61 @@
 <template>
 	<!-- Modal -->
-	<div class="modal fade" :id="modal_id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-		:aria-labelledby="`${modal_id}Label`" aria-hidden="true">
+	<div class="modal fade" :id="id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+		:aria-labelledby="`${id}Label`" aria-hidden="true">
 		<div :class="`modal-dialog modal-${size_validate}`">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" :id="`${modal_id}Label`">
-						{{ title ?? '' }}
+					<h5 class="modal-title" :id="`${id}Label`">
+						{{ title_validate ?? '' }}
 					</h5>
 					<button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button>
 				</div>
-				<form @submit.prevent="sendData" v-if="!without_form_validate">
-					<div class="modal-body">
-						<slot name="slot" :set-ref="sendData"></slot>
-					</div>
-					<div class="modal-footer" v-if="!without_footer_validate">
-						<button type="button" class="btn btn-secondary" @click="closeModal">
-							Cancel
-						</button>
-						<button type="sumbit" class="btn btn-primary">Send</button>
-					</div>
-				</form>
-				<section v-else>
-					<slot></slot>
-				</section>
+				<div class="modal-body">
+					<slot v-if="load_content"></slot>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
-const props = defineProps([
-	'modal_id',
+/*
+OPTIONS:
+	'id',
 	'title',
-	'without_form',
-	'without_footer',
 	'size'
-])
-const { modal_id, title, without_form, without_footer, size } = props
-const without_form_validate = without_form ?? false
-const without_footer_validate = without_footer ?? false
-const size_validate = size ?? ''
+*/
+const props = defineProps(['options'])
+const { id, size } = props.options
+
 const modal = ref(null)
-const slot = ref(null)
+const title_validate = ref(null)
+const size_validate = ref(size ?? '')
+const load_content = ref(false)
+
+
+// Wachers -----------------------------------
+watch(() => props.options.title, (newTitle, oldTitle) => {
+	title_validate.value = newTitle
+}, { deep: true });
+
 
 onMounted(() => {
-	modal.value = new bootstrap.Modal(document.getElementById(modal_id))
+	modal.value = new bootstrap.Modal(document.getElementById(id))
 })
 
 const openModal = () => {
+	load_content.value = true
 	modal.value.show()
 }
 
 const closeModal = () => {
 	modal.value.hide()
+	load_content.value = false
 }
 
-const sendData = () => {
-	console.log(slot.value)
-}
 
-defineExpose({ openModal });
+defineExpose({ openModal, closeModal });
 </script>

@@ -3,6 +3,7 @@ const env = import.meta.env
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -18,3 +19,4 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const analytics = getAnalytics(app)
+export const firestore = getFirestore(app)

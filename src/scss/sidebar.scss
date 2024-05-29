@@ -1,6 +1,18 @@
 .sidebar {
-	width: 300px;
+	margin: 0;
+	padding: 0;
 	height: 100vh;
-	overflow-y: auto;	
-	margin-right: 310px;
+	&__container{
+		height: 100vh;
+		max-width: 300px;
+		margin: 0;
+		padding: 0;
+	}
+	&__logo{
+		padding: 15px 0 0px 20px;
+	}
+	&__menu, &__footer{
+		padding: 0 0 10px 15px;
+	}
+
 }

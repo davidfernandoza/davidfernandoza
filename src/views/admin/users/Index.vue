@@ -7,30 +7,43 @@
 				</div>
 				<!-- Create user button -->
 				<div>
-					<button class="btn btn-primary" @click="() => modal_ref.openModal()">
-						Create User <i class="fas fa-plus"></i></button>
+					<button class="btn btn-primary" @click="createRegister" :title="titles.create"> Create User
+						<i class="fas fa-plus"></i></button>
 				</div>
 			</div>
 		</section>
 		<section class="card-body p-4">
 			<!-- Table -->
-			<DataTable class="display table table-bordered table-hover table-striped table-wrap" :columns="columns"
-				:data="data" :options="options">
-				<template #column-4="prop">
-					<div class="d-flex justify-content-center">
-						<button @click="rowClick('update', prop.rowData)" class="btn btn-warning btn-sm" title="Edit User">
-							<i class="fas fa-pencil-alt"></i>
-						</button>
-						<button @click="rowClick('delete', prop.rowData)" class="btn btn-danger btn-sm mx-1" title="Delete User">
-							<i class="fas fa-trash-alt"></i>
-						</button>
-					</div>
-				</template>
-			</DataTable>
+			<div class="table-responsive" v-if="load_table">
+				<DataTable class="display table table-bordered table-hover table-striped table-wrap" :columns="columns"
+					:data="data" :options="options">
+					<template #column-0="prop">
+						<div class="d-flex justify-content-center">
+							<button @click="actionCLick(titles.update, prop.rowData)" class="btn btn-warning btn-sm"
+								:title="titles.update">
+								<i class="fas fa-pencil-alt"></i>
+							</button>
+							<button @click="actionCLick(titles.delete, prop.rowData)" class="btn btn-danger btn-sm mx-1"
+								:title="titles.delete">
+								<i class="fas fa-trash-alt"></i>
+							</button>
+						</div>
+					</template>
+				</DataTable>
+			</div>
+			<div class="text-center py-4" v-else>
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden"></span>
+				</div>
+				<p class="mt-1">Loading...</p>
+			</div>
+
 		</section>
 		<section>
-			<Modal modal_id="user_modal" ref="modal_ref">
-				<UserForm ref="body"></UserForm>
+			<!-- Modal -->
+			<Modal :options="optionsModal" ref="modal_ref">
+				<UserForm :user="user" ref="user_form_ref" @close-modal="modal_ref.closeModal()" @reload-table="getRegister">
+				</UserForm>
 			</Modal>
 		</section>
 	</section>
@@ -39,38 +52,90 @@
 <script setup>
 import { ref } from 'vue'
 import UserForm from './UserForm.vue';
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from '@/config/Firebase'
 
+// Modal -------------------------------
 const modal_ref = ref(null)
+const optionsModal = ref({
+	id: 'userModal',
+	title: null
+})
 
+// User Form ---------------------------
+const user_form_ref = ref(null) //no sirve
+const user = ref(null)
+const titles = ref({
+	create: 'Create User',
+	update: 'Update User',
+	delete: 'Delete User'
+})
+
+const createRegister = () => {
+	optionsModal.value.title = titles.value.create
+	user.value = null
+	modal_ref.value.openModal()
+}
+const editRegister = (data) => {
+	optionsModal.value.title = titles.value.update
+	user.value = data
+	modal_ref.value.openModal()
+}
+const deleteRegister = ({ id }) => {
+	user_form_ref.value.deleteUser(id)
+}
+
+// DataTable ----------------------------
+const data = ref([]);
+const load_table = ref(false);
+
+const exportOptions = {
+	columns: ':not(:first)'
+};
 const options = ref({
-	responsive: true,
 	dom: 'Bfrtip',
-	buttons: ['pageLength', 'copy', 'csv', 'excel', 'pdf'],
+	buttons: [
+		'pageLength',
+		{ extend: 'copy', exportOptions },
+		{ extend: 'excel', exportOptions },
+		{ extend: 'pdf', exportOptions },
+		{ extend: 'csv', exportOptions },
+	],
 	lengthMenu: [
 		[10, 50, 100, -1],
 		['10 rows', '50 rows', '100 rows', 'Show all']
 	],
 });
-
 const columns = ref([
+	{ data: null, title: 'Actions' },
 	{ data: 'full_name', title: 'Full Name' },
 	{ data: 'email', title: 'Email' },
 	{ data: 'phone', title: 'Phone' },
+	{ data: 'role', title: 'Role' },
+	{ data: 'country', title: 'Country' },
 	{ data: 'created_at', title: 'Created at' },
-	{ data: null, title: 'Actions' },
 ]);
 
-const data = ref([
-	{ id: 1, full_name: 'David Fernando Torres', email: 'fernando.zapata.live@gmail.com', phone: '3107148905', created_at: Date() },
-	{ id: 2, full_name: 'Carlos', email: 'carlos@gmail.com', phone: '3117148953', created_at: Date() },
-]);
+const getRegister = async () => {
+	load_table.value = false
+	data.value = []
+	const dataFirebase = await getDocs(collection(firestore, 'users'));
+	dataFirebase.forEach(doc => {
+		data.value.push({ id: doc.id, ...doc.data() })
+	});
+	load_table.value = true
+}
 
 
-
-const rowClick = (type, data) => {
-	console.log(data, type)
+const actionCLick = (type, data) => {
+	if (type == titles.value.delete) {
+		deleteRegister(data)
+		return;
+	}
+	editRegister(data)
+	return
 };
 
-
+getRegister();
 
 </script>

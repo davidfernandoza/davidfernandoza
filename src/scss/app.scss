@@ -2,19 +2,21 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'datatables.net-bs5';
 
+// Vue Select
+@import 'vue-select/dist/vue-select.css';
+
 // Icons
 @import '~/@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~/@fortawesome/fontawesome-free/scss/solid';
 
 // Components
 @import 'sidebar';
+@import 'table';
 
-*{
-	box-sizing: border-box;
-}
-
-.app{
-	min-height: 100vh;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .main{
@@ -26,7 +28,9 @@
 	overflow-y: auto;
 }
 
-.dt-search{
-	margin-bottom: 15px;
+.c-red{
+	color: red;
 }
+
+
 
