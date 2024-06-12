@@ -4,12 +4,20 @@
 	</div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-	.about {
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
+<script setup>
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+// Method ---------------------------
+const loginUser = async () => {
+	try {
+		loadSend.value = true
+		const auth = getAuth();
+		const { email, password } = userSend.value
+		await signInWithEmailAndPassword(auth, email, password)
+		await successAlert({ reload: true })
+	} catch (error) {
+		console.error(error.code, error.message);
 	}
+	loadSend.value = false
 }
-</style>
+</script>

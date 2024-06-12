@@ -3,7 +3,7 @@ import '@/config/Bootstrap'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import Router from '@/router'
+import Router from '@/stores/router'
 import App from '@/App.vue'
 import BackendError from '@/components/BackendError.vue'
 import Modal from '@/components/Modal.vue'

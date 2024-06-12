@@ -28,16 +28,18 @@ OPTIONS:
 	'size'
 */
 const props = defineProps(['options'])
-const { id, size } = props.options
+const { id, size, title } = props.options
 
 const modal = ref(null)
-const title_validate = ref(null)
+const title_validate = ref(title ?? null)
 const size_validate = ref(size ?? '')
 const load_content = ref(false)
 
 
+
 // Wachers -----------------------------------
 watch(() => props.options.title, (newTitle, oldTitle) => {
+	console.log(newTitle);
 	title_validate.value = newTitle
 }, { deep: true });
 

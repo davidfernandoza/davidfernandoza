@@ -1,7 +1,7 @@
 import * as bootstrap from 'bootstrap'
 import moment from 'moment'
 import axios from 'axios'
-import Swal from 'sweetalert2'
+import Swal from '~/sweetalert2/src/sweetalert2.js'
 import '@fortawesome/fontawesome-free/js/all.js'
 
 import jsZip from 'jszip'

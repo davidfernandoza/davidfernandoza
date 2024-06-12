@@ -3,23 +3,23 @@
 
 		<!-- Full Name -->
 		<div class="mb-3">
-			<label for="full_name" class="form-label">Full Name <small>(<span class="c-red">*</span>)</small></label>
-			<input type="text" class="form-control" v-model="user_send.full_name" id="full_name"
-				placeholder="EX: Dario Camargo" required title="Full Name Required">
+			<label for="fullName" class="form-label">Full Name <small>(<span class="c-red">*</span>)</small></label>
+			<input type="text" class="form-control" v-model="user_send.fullName" id="fullName" placeholder="EX: Dario Camargo"
+				required title="Full Name Required">
 		</div>
 
 		<!-- Email -->
-		<div class="mb-3">
+		<div class="mb-3" v-if="!isEdit">
 			<label for="email" class="form-label">Email <small>(<span class="c-red">*</span>)</small></label>
 			<input type="email" class="form-control" v-model="user_send.email" id="email"
 				placeholder="EX: dario-camargo@email.com" required title="Email Required">
 		</div>
 
 		<!-- Password -->
-		<div class="mb-3">
+		<div class="mb-3" v-if="!isEdit">
 			<label for="password" class="form-label">Password <small>(<span class="c-red">*</span>)</small></label>
 			<input type="password" class="form-control" v-model="user_send.password" id="password" placeholder="EX: ********"
-				required title="Password Required">
+				:required="!isEdit" title="Password Required">
 		</div>
 
 		<!-- Phone -->
@@ -29,16 +29,7 @@
 				placeholder="EX: 000 000 0000" required title="Phone Required">
 		</div>
 
-		<!-- Country -->
-		<div class="mb-3">
-			<label for="country" class="form-label">Country <small>(<span class="c-red">*</span>)</small></label>
-			<VSelect :options="countries" placeholder="Select One" :clearable="false" v-model="user_send.country" id="country"
-				title="Country Required">
-				<template #search="{ attributes, events }">
-					<input class="vs__search" :required="!user_send.country" v-bind="attributes" v-on="events" />
-				</template>
-			</VSelect>
-		</div>
+
 
 		<!-- Role -->
 		<div class="mb-3">
@@ -74,40 +65,51 @@
 
 <script setup>
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { firestore } from "@/config/Firebase";
-import { createTime } from "@/services/TimestampService";
+import { createTime, updateTime } from "@/services/TimestampService";
 import { successAlert } from '@/services/AlertServices'
 import { ref } from 'vue'
-import country from 'country-list-js';
 
 
-const emit = defineEmits(['close-modal', 'reload-table'])
-const countries = ref(country.names());
-const load_send = ref(false)
+const props = defineProps(['user', 'model']);
+const emit = defineEmits(['close-modal', 'reload-table']);
+
+// Variables--------------------------
 const roles = ref(['Admin', 'User', 'Company']);
-const user_send = ref({
-	auth_id: null,
-	full_name: null,
-	email: null,
-	password: null,
-	phone: null,
-	country: null,
-	role: null,
-	created_at: null,
-	updated_at: null
-})
+const load_send = ref(false);
+const isEdit = ref(false)
+const user_send = ref(null);
 
+
+if (props.user) {
+	user_send.value = props.user
+	isEdit.value = true
+} else {
+	user_send.value = {
+		auth_id: null,
+		fullName: null,
+		email: null,
+		password: null,
+		phone: null,
+		country: null,
+		role: null,
+		createdAt: null,
+		updatedAt: null,
+		deletedAt: null
+	}
+	isEdit.value = false
+}
+
+// Method ---------------------------
 const storageUser = async () => {
 	load_send.value = true
-	const response = await created()
+	const response = !isEdit.value ? await created() : await update()
 	if (response) {
 		await successAlert({})
 		reloadTable()
 	}
 	load_send.value = false
-
-
 };
 
 const created = async () => {
@@ -118,21 +120,30 @@ const created = async () => {
 		delete user_send.value.password
 		user_send.value.auth_id = user.uid
 		user_send.value = createTime(user_send)
-		await addDoc(collection(firestore, 'users'), user_send.value);
+		await addDoc(collection(firestore, props.model), user_send.value);
 		return true
 	} catch (error) {
 		console.error(error.code, error.message);
 		return false
 	}
-}
+};
 const update = async () => {
-
-}
+	try {
+		delete user_send.value.password
+		user_send.value = updateTime(user_send)
+		await updateDoc(doc(firestore, props.model, user_send.value.id), user_send.value);
+		return true
+	} catch (error) {
+		console.error(error.code, error.message);
+		return false
+	}
+};
 
 const reloadTable = () => {
 	emit('reload-table')
 	closeModal()
-}
-const closeModal = () => emit('close-modal')
+};
+
+const closeModal = () => emit('close-modal');
 
 </script>
