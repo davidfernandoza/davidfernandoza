@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { authMiddleware } from '@/services/AuthServices'
+// import { authMiddleware } from '@/services/AuthServices'
 
 // Views
 import Home from '@/views/public/Home.vue'

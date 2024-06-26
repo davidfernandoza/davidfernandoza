@@ -6,7 +6,7 @@
 			<label for="email" class="form-label">Email</label>
 			<Field name="email" v-slot="{ errorMessage, field }" v-model="userSend.email">
 				<input type="email" id="email" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
-					placeholder="example@email.com" required title="Email Required" v-bind="field">
+					placeholder="EX: example@email.com" required title="Email Required" v-bind="field">
 				<span class="invalid-feedback">{{ errorMessage }}</span>
 			</Field>
 		</div>
@@ -16,7 +16,7 @@
 			<label for="password" class="form-label">Password </label>
 			<Field name="password" v-slot="{ errorMessage, field }" v-model="userSend.password">
 				<input type="password" id="password" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
-					placeholder="********" required title="Password Required" v-bind="field">
+					placeholder="EX: ********" required title="Password Required" v-bind="field">
 				<span class="invalid-feedback">{{ errorMessage }}</span>
 			</Field>
 		</div>
@@ -38,16 +38,13 @@
 
 <script setup>
 import { Field, Form } from 'vee-validate'
-import * as yup from 'yup';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { successAlert } from '@/services/AlertServices';
 import { computed, ref } from 'vue'
+import authValidate from '@/services/validatios/auth'
 
 // Computed --------------------------
-const schema = computed(() => yup.object({
-	email: yup.string().email().required(),
-	password: yup.string().min(8)
-}))
+const schema = computed(authValidate)
 
 // Emits -----------------------------
 const emit = defineEmits(['close-modal'])
