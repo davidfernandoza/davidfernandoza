@@ -29,7 +29,10 @@
 					<ul class="navbar-nav" v-else>
 						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								{{ user.displayName ?? user.email }}
+								<img :src="avatar" alt="avatar" width="30" height="30" class=" rounded-circle me-2 border mb-1">
+								<span>
+									{{ user.displayName ?? user.email }}
+								</span>
 							</button>
 
 							<!-- Dropdown Menu -->
@@ -63,7 +66,7 @@
 			</Register>
 		</Modal>
 		<Modal :options="optionsModalProfile" ref="modalProfileRef">
-			<Profile @close-modal="modalRegisterRef.closeModal()">
+			<Profile @close-modal="modalProfileRef.closeModal()">
 			</Profile>
 		</Modal>
 	</section>
@@ -72,7 +75,7 @@
 
 <script setup>
 
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Register from '@/views/auth/Register.vue'
 import Login from '@/views/auth/Login.vue'
 import Profile from '@/views/auth/Profile.vue'
@@ -80,9 +83,18 @@ import { signOut } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
+import imageDefault from '@/helpers/ImagesDefaul.js'
 
+//  Store Pinia -----------------------------
 const store = useAuthUser()
 const { user } = storeToRefs(store)
+
+// Avatar ----------------------------------
+const avatar = ref(imageDefault.avatar)
+watch(() => user, (newValue, oldValue) => {
+	avatar.value = newValue.value.photoURL ?? imageDefault.avatar
+}, { deep: true });
+
 
 
 // Modal -------------------------------

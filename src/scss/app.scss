@@ -18,11 +18,25 @@
 // Components
 @import 'sidebar';
 @import 'table';
+@import 'cropper';
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+
+.btn-photo {
+	position: relative;
+	outline: none;
+	&__icon{
+		position: absolute;
+		bottom: 15px;
+		left: 115px;
+		padding: .8rem;
+		border-radius: 50%;
+	}
 }
 
 .main{

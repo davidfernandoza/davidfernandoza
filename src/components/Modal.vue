@@ -4,7 +4,7 @@
 		:aria-labelledby="`${id}Label`" aria-hidden="true">
 		<div :class="`modal-dialog modal-${size_validate}`">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header" v-if="have_heard_validate">
 					<h5 class="modal-title" :id="`${id}Label`">
 						{{ title_validate ?? '' }}
 					</h5>
@@ -23,16 +23,18 @@ import { onMounted, ref, watch } from 'vue'
 
 /*
 OPTIONS:
-	'id',
-	'title',
-	'size'
+	'id':sting,
+	'title':'string',
+	'size':'sm,lg,xl',
+	'have_heard':boolean
 */
 const props = defineProps(['options'])
-const { id, size, title } = props.options
+const { id, size, title, have_heard } = props.options
 
 const modal = ref(null)
 const title_validate = ref(title ?? null)
 const size_validate = ref(size ?? '')
+const have_heard_validate = ref(have_heard ?? true)
 const load_content = ref(false)
 
 
