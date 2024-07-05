@@ -2,7 +2,7 @@
 	<Form @submit="registerUser" :validation-schema="schema" ref="form">
 
 		<!-- Email -->
-		<div class="mb-3">
+		<div class="mb-2">
 			<label for="email" class="form-label">Email</label>
 			<Field name="email" v-slot="{ errorMessage, field }" v-model="userSend.email">
 				<input type="email" id="email" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
@@ -12,11 +12,22 @@
 		</div>
 
 		<!-- Password -->
-		<div class="mb-4">
+		<div class="mb-2">
 			<label for="password" class="form-label">Password </label>
 			<Field name="password" v-slot="{ errorMessage, field }" v-model="userSend.password">
 				<input type="password" id="password" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
 					placeholder="EX: ********" required title="Password Required" v-bind="field">
+				<span class="invalid-feedback">{{ errorMessage }}</span>
+			</Field>
+		</div>
+
+		<!-- Password Confirm -->
+		<div class="mb-5">
+			<label for="passwordConfirmation" class="form-label">
+				Password Confirmation </label>
+			<Field name="passwordConfirmation" v-slot="{ errorMessage, field }" v-model="userSend.passwordConfirmation">
+				<input type="password" id="passwordConfirmation" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
+					placeholder="EX: ********" required title="Confirm Password Required" v-bind="field">
 				<span class="invalid-feedback">{{ errorMessage }}</span>
 			</Field>
 		</div>
@@ -41,10 +52,12 @@ import { Field, Form } from 'vee-validate'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { successAlert } from '@/services/AlertServices';
 import { computed, ref } from 'vue'
-import authValidate from '@/services/validatios/auth'
+import { registerValidate } from '@/services/validatios/auth'
+import { firestore } from "@/config/Firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 // Computed --------------------------
-const schema = computed(authValidate)
+const schema = computed(registerValidate)
 
 // Emits -----------------------------
 const emit = defineEmits(['close-modal'])
@@ -54,6 +67,7 @@ const loadSend = ref(false)
 const userSend = ref({
 	email: null,
 	password: null,
+	passwordConfirmation: null,
 })
 
 // Method ---------------------------
@@ -62,7 +76,11 @@ const registerUser = async () => {
 		loadSend.value = true
 		const auth = getAuth();
 		const { email, password } = userSend.value
-		await createUserWithEmailAndPassword(auth, email, password)
+		const { user } = await createUserWithEmailAndPassword(auth, email, password)
+		await addDoc(collection(firestore, 'personalInformation'), {
+			userUID: user.uid,
+			role: 'basic',
+		});
 		await successAlert({ reload: true })
 	} catch (error) {
 		console.error(error.code, error.message);

@@ -41,10 +41,10 @@ import { Field, Form } from 'vee-validate'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
-import authValidate from '@/services/validatios/auth'
+import { loginValidate } from '@/services/validatios/auth'
 
 // Computed --------------------------
-const schema = computed(authValidate)
+const schema = computed(loginValidate)
 
 // Emits -----------------------------
 const emit = defineEmits(['close-modal'])

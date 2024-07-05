@@ -12,13 +12,23 @@ import PageLayout from "@/components/layouts/PageLayout.vue";
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '@/config/Firebase'
 import { useAuthUser } from '@/stores/auth.js'
+import { getOne } from '@/services/QueryService'
+import { signOut } from "firebase/auth";
 
 
 const store = useAuthUser()
 const { addUserState } = store
 
-onAuthStateChanged(auth, userAuth => {
-  addUserState(userAuth)
+
+onAuthStateChanged(auth, async userAuth => {
+  if (!userAuth) return null
+  let personalInformation = await getOne({
+    model: 'personalInformation',
+    key: 'userUID',
+    value: userAuth.uid
+  })
+  if (!personalInformation) return await signOut(auth)
+  addUserState({ ...userAuth, ...personalInformation })
 })
 
 </script>

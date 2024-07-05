@@ -75,7 +75,7 @@
 
 <script setup>
 
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import Register from '@/views/auth/Register.vue'
 import Login from '@/views/auth/Login.vue'
 import Profile from '@/views/auth/Profile.vue'
@@ -118,6 +118,7 @@ const optionsModalProfile = ref({
 const logout = async () => {
 	try {
 		await signOut(auth)
+		window.location.reload()
 	} catch (error) {
 		console.log(error);
 	}

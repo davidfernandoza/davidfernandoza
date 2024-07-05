@@ -21,7 +21,7 @@
 			<label for="displayName" class="form-label">Full Name</label>
 			<Field name="displayName" v-slot="{ errorMessage, field }" v-model="userSend.displayName">
 				<input type="text" id="displayName" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
-					placeholder="EX: Maria Jose" required title="Full Name Required" v-bind="field">
+					placeholder="EX: Jessie Velez" required title="Full Name Required" v-bind="field">
 				<span class="invalid-feedback">{{ errorMessage }}</span>
 			</Field>
 		</div>
@@ -58,7 +58,7 @@ import { successAlert } from '@/services/AlertServices';
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
-import profileValidate from '@/services/validatios/profile'
+import { profileValidate } from '@/services/validatios/auth'
 import { uploadFile } from '@/services/FileServices'
 import imageDefault from '@/helpers/ImagesDefaul.js'
 
