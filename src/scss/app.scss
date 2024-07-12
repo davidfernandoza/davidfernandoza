@@ -19,38 +19,6 @@
 @import 'sidebar';
 @import 'table';
 @import 'cropper';
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-
-.btn-photo {
-	position: relative;
-	outline: none;
-	&__icon{
-		position: absolute;
-		bottom: 15px;
-		left: 115px;
-		padding: .8rem;
-		border-radius: 50%;
-	}
-}
-
-.main{
-	background-color: rgb(216, 214, 214);
-}
-
-.body{
-	height: 100vh;
-	overflow-y: auto;
-}
-
-.c-red{
-	color: red;
-}
-
-
+@import 'utils';
+@import 'placeholder';
 

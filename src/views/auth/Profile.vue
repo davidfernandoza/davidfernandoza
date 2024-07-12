@@ -26,9 +26,32 @@
 			</Field>
 		</div>
 
+		<!-- Countries -->
+		<div class="mb-3">
+			<label for="country" class="form-label">Country</label>
+			<Field name="country" v-slot="{ errorMessage, field }" v-model="userSend.country">
+				<VSelect :options="countries" placeholder="EX: Colombia" :clearable="false" v-model="userSend.country"
+					:class="`${errorMessage ? 'is-invalid' : ''}`" id="country" title="Country Required" v-bind="field">
+					<template #search="{ attributes, events }">
+						<input class="vs__search" :required="!userSend.country" v-bind="attributes" v-on="events" />
+					</template>
+				</VSelect>
+				<span class="invalid-feedback">{{ errorMessage }}</span>
+			</Field>
+		</div>
+
+		<!-- Phone -->
+		<div class="mb-3">
+			<label for="phone" class="form-label">Phone</label>
+			<Field name="phone" v-slot="{ errorMessage, field }" v-model="userSend.phone">
+				<input type="text" id="phone" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
+					placeholder="EX: 300 000 0000" required title="Phone Required" v-bind="field">
+				<span class="invalid-feedback">{{ errorMessage }}</span>
+			</Field>
+		</div>
 
 		<!-- Footer -->
-		<section class="d-flex justify-content-end mb-3">
+		<section class="d-flex justify-content-end my-3 pt-3">
 			<button type="button" class="btn btn-secondary mx-1" @click="closeModal" :disabled="loadSend"> Cancel
 			</button>
 			<button type="sumbit" class="btn btn-primary" :disabled="loadSend">
@@ -47,11 +70,12 @@
 			:withCircle="true">
 		</CropperImage>
 	</section>
-
 </template>
 
 <script setup>
 import CropperImage from '@/components/CropperImage.vue'
+import imageDefault from '@/helpers/ImagesDefaul.js'
+import country from 'country-list-js';
 import { Field, Form } from 'vee-validate'
 import { getAuth, updateProfile } from "firebase/auth";
 import { successAlert } from '@/services/AlertServices';
@@ -60,14 +84,16 @@ import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
 import { profileValidate } from '@/services/validatios/auth'
 import { uploadFile } from '@/services/FileServices'
-import imageDefault from '@/helpers/ImagesDefaul.js'
+import { firestore } from "@/config/Firebase";
+import { updateDoc, doc } from "firebase/firestore";
+
 
 
 //  Store Pinia -----------------------------
 
 const store = useAuthUser()
 const { user } = storeToRefs(store)
-const avatar = ref(user.value.photoURL ?? imageDefault.avatar)
+const avatar = ref(user.value?.photoURL ?? imageDefault.avatar)
 
 // Computed --------------------------
 
@@ -87,6 +113,7 @@ const photoPreview = ref(null)
 const cropperOpen = ref(false)
 const canvas = ref(null)
 const userSend = ref({ ...user.value })
+const countries = ref(country.names());
 
 
 // Methods ---------------------------
@@ -94,11 +121,18 @@ const updateUser = async () => {
 	try {
 		loadSend.value = true
 		const auth = getAuth()
+		const updateAsync = []
 		if (canvas.value) {
 			const url = await uploadFile(canvas.value, '/avatars')
 			userSend.value.photoURL = url
 		}
-		await updateProfile(auth.currentUser, userSend.value)
+		updateAsync.push(updateProfile(auth.currentUser, userSend.value))
+		updateAsync.push(updateDoc(doc(firestore, "personalInformation", userSend.value.id),
+			{
+				phone: userSend.value.phone,
+				country: userSend.value.country
+			}))
+		await Promise.all(updateAsync)
 		await successAlert({ reload: true })
 	} catch (error) {
 		console.error(error.code, error.message);

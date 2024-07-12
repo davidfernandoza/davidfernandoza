@@ -8,7 +8,7 @@ export const getOne = async ({ model, key, value }) => {
 		query(collection(firestore, model), where(key, '==', value), limit(1))
 	)
 	data.forEach(doc => {
-		response = doc.data()
+		response = { id: doc.id, ...doc.data() }
 	})
 	return response
 }
@@ -19,7 +19,7 @@ export const getAll = async ({ model, key, value }) => {
 		query(collection(firestore, model), where(key, '==', value), limit(1))
 	)
 	data.forEach(doc => {
-		response.push(doc.data())
+		response.push({ id: doc.id, ...doc.data() })
 	})
 	return response
 }

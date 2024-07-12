@@ -37,14 +37,22 @@
 
 							<!-- Dropdown Menu -->
 							<ul class="dropdown-menu">
-								<li>
+								<li v-if="!user.emailVerified">
+									<p class="px-3 c-red">
+										<i class="fa-solid fa-circle-exclamation"></i>
+										<small class="ms-2">Email for verification!</small>
+									</p>
+								</li>
+								<li v-if="user.emailVerified">
 									<button class="dropdown-item" @click="openModalProfile">
-										Profile
+										<i class="fa-regular fa-address-card"></i>
+										<span class="ms-2"> Profile</span>
 									</button>
 								</li>
 								<li>
 									<button class="dropdown-item" @click="logout">
-										Logout
+										<i class="fa-solid fa-arrow-right-from-bracket"></i>
+										<span class="ms-3">Logout</span>
 									</button>
 								</li>
 							</ul>
@@ -58,16 +66,21 @@
 	<section>
 		<!-- Modal -->
 		<Modal :options="optionsModalLogin" ref="modalLoginRef">
-			<Login @close-modal="modalLoginRef.closeModal()">
+			<Login @close-modal="modalLoginRef.closeModal()" @open-register="openModalRegister"
+				@open-forgot-password="openModalForgotPassword">
 			</Login>
 		</Modal>
 		<Modal :options="optionsModalRegister" ref="modalRegisterRef">
-			<Register @close-modal="modalRegisterRef.closeModal()">
+			<Register @close-modal="modalRegisterRef.closeModal()" @open-login="openModalLogin">
 			</Register>
 		</Modal>
 		<Modal :options="optionsModalProfile" ref="modalProfileRef">
 			<Profile @close-modal="modalProfileRef.closeModal()">
 			</Profile>
+		</Modal>
+		<Modal :options="optionsModalForgotPassword" ref="modalForgotPasswordRef">
+			<ForgotPassword @close-modal="modalForgotPasswordRef.closeModal()" @open-login="openModalLogin">
+			</ForgotPassword>
 		</Modal>
 	</section>
 
@@ -75,32 +88,30 @@
 
 <script setup>
 
-import { ref, watch } from 'vue'
 import Register from '@/views/auth/Register.vue'
 import Login from '@/views/auth/Login.vue'
 import Profile from '@/views/auth/Profile.vue'
+import ForgotPassword from '@/views/auth/ForgotPasswor.vue'
+import imageDefault from '@/helpers/ImagesDefaul.js'
+
+import { ref } from 'vue'
 import { signOut } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
-import imageDefault from '@/helpers/ImagesDefaul.js'
 
 //  Store Pinia -----------------------------
 const store = useAuthUser()
 const { user } = storeToRefs(store)
 
 // Avatar ----------------------------------
-const avatar = ref(imageDefault.avatar)
-watch(() => user, (newValue, oldValue) => {
-	avatar.value = newValue.value.photoURL ?? imageDefault.avatar
-}, { deep: true });
-
-
+const avatar = ref(user.value?.photoURL ?? imageDefault.avatar)
 
 // Modal -------------------------------
 const modalLoginRef = ref(null)
 const modalRegisterRef = ref(null)
 const modalProfileRef = ref(null)
+const modalForgotPasswordRef = ref(null)
 
 const optionsModalLogin = ref({
 	id: 'loginModal',
@@ -113,6 +124,10 @@ const optionsModalRegister = ref({
 const optionsModalProfile = ref({
 	id: 'profileModal',
 	title: 'Profile'
+})
+const optionsModalForgotPassword = ref({
+	id: 'forgotPasswordModal',
+	title: 'Forgot Password'
 })
 
 const logout = async () => {
@@ -132,5 +147,8 @@ const openModalLogin = () => {
 }
 const openModalProfile = () => {
 	modalProfileRef.value.openModal();
+}
+const openModalForgotPassword = () => {
+	modalForgotPasswordRef.value.openModal();
 }
 </script>

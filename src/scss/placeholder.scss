@@ -1,0 +1,28 @@
+// V-SELECT
+
+/* do not group these rules */
+*::-webkit-input-placeholder {
+	color: grey!important;
+}
+*::-moz-placeholder {
+	/* FF 4-18 */
+	color: grey!important;
+	opacity: 1;
+}
+*::-moz-placeholder {
+	/* FF 19+ */
+	color: grey!important;
+	opacity: 1;
+}
+*::-ms-input-placeholder {
+	/* IE 10+ */
+	color: grey!important;
+}
+*::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: grey!important;
+}
+*::placeholder {
+	/* modern browser */
+	color: grey!important;
+}

@@ -1,10 +1,11 @@
 <template>
-	<div v-if="Object.entries(errors).length > 0" role="alert"
-		class="alert alert-danger alert-dismissible fade show mx-2 my-2" id="alert-backend">
-		<ul>
-			<li v-for="(error, index) in errors" :key="index">
-				{{ error }}
-			</li>
+	<div v-if="error" role="alert" class="alert alert-danger alert-dismissible fade show mt-1 mb-3"
+		id="alert-backend">
+		<h2 class="alert-heading h5"><i class="fa-solid fa-bug"></i>
+			<span class="ms-2">Error!</span>
+		</h2>
+		<ul class="m-0 pb-0">
+			<li>{{ error }}</li>
 		</ul>
 		<button type="button" class="btn-close" @click="closeAlert"></button>
 	</div>
@@ -12,17 +13,27 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-const props = defineProps(['errors'])
-const errors = ref({})
 
-watch(() => props.errors, (newErrors, oldErrors) => {
-	errors.value = newErrors
-})
+// Emits ------------------------
+const emit = defineEmits(['close-alert-backend'])
+
+// Props -------------------------
+const props = defineProps(['error'])
+const error = ref(null)
+error.value = props.error
+
+watch(() => props.error, (newErrors, oldErrors) => {
+	error.value = newErrors
+}, { deep: true });
 
 const closeAlert = () => {
 	const alertBackend = document.getElementById('alert-backend')
 	const bsAlert = new bootstrap.Alert(alertBackend)
 	bsAlert.close()
-	errors.value = {}
+	error.value = null
+	emit('close-alert-backend')
 };
+
+
+
 </script>

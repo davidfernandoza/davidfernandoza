@@ -2,7 +2,7 @@ import * as yup from 'yup'
 
 const auth = {
 	email: yup.string().email().required().label('"Email"'),
-	password: yup.string().min(8).label('"Password"')
+	password: yup.string().required().min(8).label('"Password"')
 }
 
 export const registerValidate = () =>
@@ -22,5 +22,11 @@ export const loginValidate = () => yup.object(auth)
 
 export const profileValidate = () =>
 	yup.object({
-		displayName: yup.string().min(5).label('"Full Name"')
+		displayName: yup.string().required().min(5).label('"Full Name"'),
+		phone: yup.number().required().integer().positive().min(4).label('"Phone"'),
+		country: yup.string().required().label('"Country"')
+	})
+export const emailValidate = () =>
+	yup.object({
+		email: auth.email
 	})

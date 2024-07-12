@@ -1,0 +1,45 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+// V-SELECT
+.is-invalid > div:first-of-type{	
+	border-color: #dc3545!important;
+}
+.vs__search{	
+	padding: 2px!important;
+}
+
+.load-card{
+	width: 160px;
+}
+
+.show-button {
+	width: 50px;
+}
+.btn-photo {
+	position: relative;
+	outline: none;
+	&__icon{
+		position: absolute;
+		bottom: 15px;
+		left: 115px;
+		padding: .8rem;
+		border-radius: 50%;
+	}
+}
+
+.main{
+	background-color: rgb(216, 214, 214);
+}
+
+.body{
+	height: 100vh;
+	overflow-y: auto;
+}
+
+.c-red{
+	color: red;
+}
