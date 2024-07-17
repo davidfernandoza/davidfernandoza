@@ -5,7 +5,7 @@
 	<Form @submit="loginUser" :validation-schema="schema" ref="form">
 		<!-- Email -->
 		<div class="mb-3">
-			<label for="email" class="form-label">Email</label>
+			<label for="email" class="form-label">Email <small>(<span class="c-red">*</span>)</small></label>
 			<Field name="email" v-slot="{ errorMessage, field }" v-model="userSend.email">
 				<input type="email" id="email" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`" required
 					placeholder="EX: example@email.com" title="Email Required" v-bind="field">
@@ -15,7 +15,7 @@
 
 		<!-- Password -->
 		<div class="mb-1">
-			<label for="password" class="form-label">Password </label>
+			<label for="password" class="form-label">Password <small>(<span class="c-red">*</span>)</small></label>
 			<Field name="password" v-slot="{ errorMessage, field }" v-model="userSend.password">
 				<div class="input-group">
 					<!-- Input -->
@@ -28,10 +28,10 @@
 					<button class="btn btn-outline-secondary show-button" type="button" id="button-addon2"
 						@click="() => showPassword = !showPassword">
 						<span v-show="showPassword">
-							<i class="fa-solid fa-eye-slash"></i>
+							<i class="fa-solid fa-eye-slash" title="Hide Password"></i>
 						</span>
 						<span v-show="!showPassword">
-							<i class="fa-solid fa-eye"></i>
+							<i class="fa-solid fa-eye" title="Show Password"></i>
 						</span>
 					</button>
 					<span class="invalid-feedback">{{ errorMessage }}</span>
@@ -40,13 +40,20 @@
 		</div>
 
 		<!-- Forgot password? -->
-		<div class="w-100 d-flex justify-content-start ms-0 ps-0 mb-4">
-			<button type="button" class="btn btn-link ms-0 ps-0" @click="openForgotPassword">I do forgot password</button>
+		<div class="w-100 d-flex justify-content-start ms-0 ps-0 mb-3">
+			<button type="button" class="btn btn-link ms-0 ps-0" @click="openForgotPassword">I forgot password</button>
+		</div>
+
+		<!-- Staiment -->
+		<div class="mb-3 mt-3 d-flex justify-content-end">
+			<div class="form-text">This symbol (<span class="c-red">*</span>) is means required
+			</div>
 		</div>
 
 		<!-- Footer -->
 		<section class="d-flex justify-content-between">
-			<small>I don't have an account, i like goto<button class="btn btn-link ps-1 pb-1 pt-0 m-0" @click="openeRegiter">
+			<small>I don't have an account, i like goto<button type="button" class="btn btn-link ps-1 pb-1 pt-0 m-0"
+					@click="openeRegiter">
 					Register</button> </small>
 			<div class="d-flex justify-content-end">
 
@@ -65,13 +72,12 @@
 </template>
 
 <script setup>
+import errorMessages from '@/helpers/errorMessages'
 import { Field, Form } from 'vee-validate'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
-import { loginValidate } from '@/services/validatios/auth'
-import BackendError from '@/components/BackendError.vue';
-import errorMessages from '@/helpers/errorMessages'
+import { loginValidate } from '@/services/schemas/AuthValidate'
 
 
 // Computed --------------------------

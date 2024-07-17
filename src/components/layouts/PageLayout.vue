@@ -45,13 +45,19 @@
 								</li>
 								<li v-if="user.emailVerified">
 									<button class="dropdown-item" @click="openModalProfile">
-										<i class="fa-regular fa-address-card"></i>
+										<i class="fa-solid fa-address-card"></i>
 										<span class="ms-2"> Profile</span>
 									</button>
 								</li>
 								<li>
+									<button class="dropdown-item" @click="openModalSecurity">
+										<i class="fa-solid fa-shield-halved"></i>
+										<span class="ms-3">Password and security</span>
+									</button>
+								</li>
+								<li>
 									<button class="dropdown-item" @click="logout">
-										<i class="fa-solid fa-arrow-right-from-bracket"></i>
+										<i class="ms-1 fa-solid fa-right-from-bracket"></i>
 										<span class="ms-3">Logout</span>
 									</button>
 								</li>
@@ -82,6 +88,10 @@
 			<ForgotPassword @close-modal="modalForgotPasswordRef.closeModal()" @open-login="openModalLogin">
 			</ForgotPassword>
 		</Modal>
+		<Modal :options="optionsModalSecurity" ref="modalSecurityRef">
+			<Security @close-modal="modalSecurityRef.closeModal()">
+			</Security>
+		</Modal>
 	</section>
 
 </template>
@@ -89,8 +99,9 @@
 <script setup>
 
 import Register from '@/views/auth/Register.vue'
+import Security from '@/views/auth/Security.vue'
 import Login from '@/views/auth/Login.vue'
-import Profile from '@/views/auth/Profile.vue'
+import Profile from '@/views/users/Profile.vue'
 import ForgotPassword from '@/views/auth/ForgotPasswor.vue'
 import imageDefault from '@/helpers/ImagesDefaul.js'
 
@@ -112,6 +123,7 @@ const modalLoginRef = ref(null)
 const modalRegisterRef = ref(null)
 const modalProfileRef = ref(null)
 const modalForgotPasswordRef = ref(null)
+const modalSecurityRef = ref(null)
 
 const optionsModalLogin = ref({
 	id: 'loginModal',
@@ -128,6 +140,10 @@ const optionsModalProfile = ref({
 const optionsModalForgotPassword = ref({
 	id: 'forgotPasswordModal',
 	title: 'Forgot Password'
+})
+const optionsModalSecurity = ref({
+	id: 'securityModal',
+	title: 'Password and security'
 })
 
 const logout = async () => {
@@ -151,4 +167,7 @@ const openModalProfile = () => {
 const openModalForgotPassword = () => {
 	modalForgotPasswordRef.value.openModal();
 }
-</script>
+const openModalSecurity = () => {
+	modalSecurityRef.value.openModal();
+}
+</script>@/views/users/Profile.vue

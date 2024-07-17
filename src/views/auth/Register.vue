@@ -5,7 +5,7 @@
 	<Form @submit="registerUser" :validation-schema="schema" ref="form">
 		<!-- Email -->
 		<div class="mb-2">
-			<label for="email" class="form-label">Email</label>
+			<label for="email" class="form-label">Email <small>(<span class="c-red">*</span>)</small></label>
 			<Field name="email" v-slot="{ errorMessage, field }" v-model="userSend.email">
 				<input type="email" id="email" :class="`form-control ${errorMessage ? 'is-invalid' : ''}`"
 					placeholder="EX: example@email.com" required title="Email Required" v-bind="field">
@@ -15,7 +15,7 @@
 
 		<!-- Password -->
 		<div class="mb-2">
-			<label for="password" class="form-label">Password </label>
+			<label for="password" class="form-label">Password <small>(<span class="c-red">*</span>)</small></label>
 			<Field name="password" v-slot="{ errorMessage, field }" v-model="userSend.password">
 				<div class="input-group">
 					<!-- Input -->
@@ -40,9 +40,9 @@
 		</div>
 
 		<!-- Password Confirm -->
-		<div class="mb-5">
+		<div class="mb-3">
 			<label for="passwordConfirmation" class="form-label">
-				Password Confirmation </label>
+				Password Confirmation <small>(<span class="c-red">*</span>)</small></label>
 			<Field name="passwordConfirmation" v-slot="{ errorMessage, field }" v-model="userSend.passwordConfirmation">
 				<div class="input-group">
 					<!-- Input -->
@@ -66,10 +66,16 @@
 			</Field>
 		</div>
 
+		<!-- Staiment -->
+		<div class="mb-3 mt-3 d-flex justify-content-end">
+			<div class="form-text">This symbol (<span class="c-red">*</span>) is means required
+			</div>
+		</div>
+
 		<!-- Footer -->
 		<section class="d-flex justify-content-between">
 
-			<small>I do have an account, i like goto<button class="btn btn-link ps-1 pb-1 pt-0 m-0"
+			<small>I have an account, i like goto<button type="button" class="btn btn-link ps-1 pb-1 pt-0 m-0"
 					@click="openLogin">Login</button> </small>
 
 			<div class="d-flex justify-content-end">
@@ -88,16 +94,20 @@
 </template>
 
 <script setup>
-import { Field, Form } from 'vee-validate'
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
-import { successAlert } from '@/services/AlertServices'
-import { computed, ref } from 'vue'
-import { registerValidate } from '@/services/validatios/auth'
-import { firestore } from "@/config/Firebase"
-import { collection, addDoc } from "firebase/firestore"
 import errorMessages from '@/helpers/errorMessages'
 import successMessages from '@/helpers/successMessages'
+import { Field, Form } from 'vee-validate'
+import { successAlert } from '@/services/AlertServices'
+import { computed, ref } from 'vue'
+import { registerValidate } from '@/services/schemas/AuthValidate'
+import { firestore } from "@/config/Firebase"
+import { collection, addDoc } from "firebase/firestore"
 import { PersonalInformation } from '@/helpers/colectionNames'
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	sendEmailVerification
+} from "firebase/auth"
 
 
 // Computed --------------------------

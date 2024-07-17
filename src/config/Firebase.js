@@ -22,3 +22,4 @@ export const auth = getAuth(app)
 export const analytics = getAnalytics(app)
 export const firestore = getFirestore(app)
 export const storage = getStorage(app, env.VITE_FR_BUCKET)
+export const recaptchaSiteKey = env.VITE_RECAPTCHA_SITE_KEY ?? null

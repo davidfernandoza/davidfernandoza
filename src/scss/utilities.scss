@@ -1,0 +1,83 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+// V-SELECT
+.is-invalid > div:first-of-type{	
+	border-color: #dc3545!important;
+}
+.vs__search{	
+	padding: 2px!important;
+}
+
+.load-card{
+	width: 160px;
+}
+
+.show-button {
+	width: 50px;
+}
+.btn-photo {
+	position: relative;
+	outline: none;
+	&__icon{
+		position: absolute;
+		bottom: 15px;
+		left: 115px;
+		padding: .8rem;
+		border-radius: 50%;
+	}
+}
+
+.main{
+	background-color: rgb(216, 214, 214);
+}
+
+.body{
+	height: 100vh;
+	overflow-y: auto;
+}
+
+.c-red{
+	color: red;
+}
+
+
+.hr-text {
+	margin-top: 2.2rem;
+	margin-bottom: 1.4rem;
+	line-height: 1em;
+	position: relative;
+	outline: 0;
+	border: 0;
+	color: black;
+	text-align: center;
+	height: 1.5em;
+	opacity: .5;
+	&:before {
+			content: '';
+			// use the linear-gradient for the fading effect
+			// use a solid background color for a solid bar
+			background: linear-gradient(to right, transparent, #818078, transparent);
+			position: absolute;
+			left: 0;
+			top: 50%;
+			width: 100%;
+			height: 1px;
+	}
+	&:after {
+			content: attr(data-content);
+			position: relative;
+			display: inline-block;
+			color: black;
+
+			padding: 0 .5em;
+			line-height: 1.5em;
+			// this is really the only tricky part, you need to specify the background color of the container element...
+			color: #5e5d59;
+			background-color: #fcfcfa;
+	}
+}
+
