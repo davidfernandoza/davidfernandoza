@@ -148,11 +148,11 @@
 <script setup>
 import errorMessages from '@/helpers/errorMessages'
 import successMessages from '@/helpers/successMessages'
-import Recaptcha from '@/components/Recaptcha.vue'
+import Recaptcha from '@/app/components/Recaptcha.vue'
 import { Field, Form } from 'vee-validate'
 import { successAlert } from '@/services/AlertServices'
 import { computed, ref } from 'vue'
-import { securityValidate } from '@/services/schemas/AuthValidate'
+import { securityValidate } from '@/app/schemas/AuthValidate'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
 import {
@@ -313,3 +313,4 @@ const closeModal = () => emit('close-modal');
 handlerTime();
 
 </script>
+@/app/AlertServices@/app/schemas/AuthValidate

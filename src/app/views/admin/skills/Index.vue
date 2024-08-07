@@ -3,11 +3,11 @@
 		<section class="card-header">
 			<div class="d-flex justify-content-between">
 				<div class="mt-2">
-					<i class="fas fa-users fa-lg"></i> Users
+					<i class="fas fa-users fa-lg"></i> Skills
 				</div>
 				<!-- Create user button -->
 				<div>
-					<button class="btn btn-primary" @click="createRegister" :title="titles.create"> Create User
+					<button class="btn btn-primary" @click="createRegister" :title="titles.create"> Create skill
 						<i class="fas fa-plus"></i></button>
 				</div>
 			</div>
@@ -174,3 +174,4 @@ const actionCLick = (type, data) => {
 getRegister();
 
 </script>
+@/app/AlertServices

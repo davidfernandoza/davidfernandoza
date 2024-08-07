@@ -1,13 +1,5 @@
+import authMiddleware from '@/app/middlewares/AuthMiddleware'
 import { createRouter, createWebHistory } from 'vue-router'
-// import { authMiddleware } from '@/services/AuthServices'
-
-// Views
-import Home from '@/views/public/Home.vue'
-import Login from '@/views/auth/Login.vue'
-import Users from '@/views/admin/users/Index.vue'
-import Admin from '@/views/admin/Index.vue'
-import Skills from '@/views/admin/skills/Index.vue'
-import Error404 from '@/views/errors/Error404.vue'
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -15,36 +7,30 @@ const router = createRouter({
 		{
 			path: '/',
 			name: 'home',
-			component: Home
-		},
-		{
-			path: '/login',
-			name: 'login',
-			// beforeEnter: authMiddleware,
-			component: Login
-		},
-		{
-			path: '/admin/users',
-			name: 'admin-users',
-			// beforeEnter: authMiddleware,
-			component: Users
+			component: () => import('@/app/views/public/Home.vue')
 		},
 		{
 			path: '/admin',
 			name: 'admin',
 			// beforeEnter: authMiddleware,
-			component: Admin
+			component: () => import('@/app/views/admin/Index.vue')
 		},
 		{
 			path: '/admin/skills',
 			name: 'admin-skills',
 			// beforeEnter: authMiddleware,
-			component: Skills
+			component: () => import('@/app/views/admin/skills/Index.vue')
+		},
+		{
+			path: '/admin/projects',
+			name: 'admin-projects',
+			// beforeEnter: authMiddleware,
+			component: () => import('@/app/views/admin/projects/Index.vue')
 		},
 		{
 			path: '/:pathMatch(.*)*',
 			name: '404',
-			component: Error404
+			component: () => import('@/app/views/errors/Error404.vue')
 		}
 	]
 })

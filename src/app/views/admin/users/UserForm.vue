@@ -147,3 +147,4 @@ const reloadTable = () => {
 const closeModal = () => emit('close-modal');
 
 </script>
+@/app/AlertServices

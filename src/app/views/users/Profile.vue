@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import CropperImage from '@/components/CropperImage.vue'
+import CropperImage from '@/app/components/CropperImage.vue'
 import imageDefault from '@/helpers/ImagesDefaul.js'
 import country from 'country-list-js';
 import errorMessages from '@/helpers/errorMessages'
@@ -96,14 +96,16 @@ import { successAlert } from '@/services/AlertServices';
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
-import { profileValidate } from '@/services/schemas/ProfileValidate'
+import { profileValidate } from '@/app/schemas/ProfileValidate'
 import { uploadFile } from '@/services/FileServices'
 import { firestore } from "@/config/Firebase";
 import { updateDoc, doc } from "firebase/firestore";
 
 
+// Props ------------------------------	
+const props = defineProps('type')
 
-//  Store Pinia -----------------------------
+//  Store Pinia -----------------------
 
 const store = useAuthUser()
 const { user } = storeToRefs(store)
@@ -177,3 +179,4 @@ const clearErrorBackend = () => errorBackend.value = null
 const closeModal = () => emit('close-modal');
 
 </script>
+@/app/AlertServices@/app/schemas/ProfileValidate

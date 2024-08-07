@@ -41,12 +41,12 @@
 <script setup>
 import errorMessages from '@/helpers/errorMessages'
 import successMessages from '@/helpers/successMessages'
-import Recaptcha from '@/components/Recaptcha.vue'
+import Recaptcha from '@/app/components/Recaptcha.vue'
 import { Field, Form } from 'vee-validate'
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
-import { emailValidate } from '@/services/schemas/AuthValidate'
+import { emailValidate } from '@/app/schemas/AuthValidate'
 import { successAlert } from '@/services/AlertServices'
 
 // Ref -------------------------------
@@ -91,3 +91,4 @@ const closeModal = () => {
 }
 
 </script>
+@/app/AlertServices@/app/schemas/AuthValidate

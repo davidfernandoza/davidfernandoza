@@ -1,7 +1,7 @@
 <template>
 	<nav class="navbar navbar-expand-lg bg-body-tertiary">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">Navbar</a>
+			<a class="navbar-brand" href="#">@davidfernandoza</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -9,7 +9,18 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="#">Home</a>
+						<a class="nav-link active w-100" aria-current="page" href="#">
+							<span class="w-100">About me</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Skills</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Projects</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Contact</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Blog</a>
@@ -30,13 +41,11 @@
 						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								<img :src="avatar" alt="avatar" width="30" height="30" class=" rounded-circle me-2 border mb-1">
-								<span>
-									{{ user.displayName ?? user.email }}
-								</span>
+								<span> {{ getUsername(user) }} </span>
 							</button>
 
 							<!-- Dropdown Menu -->
-							<ul class="dropdown-menu">
+							<ul class="dropdown-menu dropdown-menu-end">
 								<li v-if="!user.emailVerified">
 									<p class="px-3 c-red">
 										<i class="fa-solid fa-circle-exclamation"></i>
@@ -54,6 +63,12 @@
 										<i class="fa-solid fa-shield-halved"></i>
 										<span class="ms-3">Password and security</span>
 									</button>
+								</li>
+								<li v-if="user.role === 'admin'">
+									<router-link to="/admin" class="dropdown-item">
+										<i class="fa-solid fa-user-tie"></i>
+										<span class="ms-3">Admin area</span>
+									</router-link>
 								</li>
 								<li>
 									<button class="dropdown-item" @click="logout">
@@ -98,13 +113,13 @@
 
 <script setup>
 
-import Register from '@/views/auth/Register.vue'
-import Security from '@/views/auth/Security.vue'
-import Login from '@/views/auth/Login.vue'
-import Profile from '@/views/users/Profile.vue'
-import ForgotPassword from '@/views/auth/ForgotPasswor.vue'
+import Register from '@/app/views/auth/Register.vue'
+import Security from '@/app/views/auth/Security.vue'
+import Login from '@/app/views/auth/Login.vue'
+import Profile from '@/app/views/users/Profile.vue'
+import ForgotPassword from '@/app/views/auth/ForgotPasswor.vue'
 import imageDefault from '@/helpers/ImagesDefaul.js'
-
+import { getUsername } from '@/services/UserNameServices.js'
 import { ref } from 'vue'
 import { signOut } from "firebase/auth";
 import { auth } from '@/config/Firebase'
