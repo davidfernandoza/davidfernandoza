@@ -4,9 +4,14 @@ import { collection, getDocs, limit, query, where } from 'firebase/firestore'
 
 export const getOne = async ({ model, key, value }) => {
 	let response = null
-	const data = await getDocs(
-		query(collection(firestore, model), where(key, '==', value), limit(1))
-	)
+	let data = null
+	if (key && value) {
+		data = await getDocs(
+			query(collection(firestore, model), where(key, '==', value), limit(1))
+		)
+	} else {
+		data = await getDocs(query(collection(firestore, model), limit(1)))
+	}
 	data.forEach(doc => {
 		response = { id: doc.id, ...doc.data() }
 	})

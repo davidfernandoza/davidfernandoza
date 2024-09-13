@@ -1,9 +1,9 @@
 <template>
-  <section class="main" v-if="loadPage">
+  <section :class="`${routeName == 'home' ? '' : 'main'}`" v-if="loadPage">
     <PageLayout v-if="routeName == 'home'"></PageLayout>
     <AdminLayout v-else></AdminLayout>
     <div class="body">
-      <RouterView></RouterView>
+      <RouterView :class="`${routeName == 'home' ? '' : 'admin-body'}`"></RouterView>
     </div>
   </section>
   <div v-else>
@@ -45,7 +45,9 @@ const { loadPage } = storeToRefs(pageStore)
 const { addLoadPageState } = pageStore
 const { addUserState } = authStore
 
-// Load Page - First step before middleware --
+
+
+// Load Page - First step before middleware--
 onAuthStateChanged(auth, userAuth => {
   setTimeout(async () => {
     addLoadPageState(false)

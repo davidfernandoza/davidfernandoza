@@ -33,11 +33,13 @@
 
 .main{
 	background-color: rgb(216, 214, 214);
+	display: flex;
 }
 
 .body{
 	height: 100vh;
 	overflow-y: auto;
+	width: 100%;
 }
 
 .c-red{

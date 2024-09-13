@@ -79,15 +79,15 @@
 					@click="openLogin">Login</button> </small>
 
 			<div class="d-flex justify-content-end">
-				<button type="button" class="btn btn-secondary mx-1 px-2" @click="closeModal" :disabled="loadSend"> Cancel
+				<button type="button" class="btn btn-secondary mx-1 px-2" @click="closeModal" v-if="!loadSend"> Cancel
 				</button>
-				<button type="sumbit" :class="`btn btn-primary ${loadSend ? 'px-1 py-0' : ''}`" :disabled="loadSend">
+				<button type="sumbit" class="btn btn-primary" :disabled="loadSend">
 					<span v-if="!loadSend">Send</span>
 					<div v-else>
-						<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-						<span role="status" class="ms-2">Loading</span>
+						<LoadComponentLayout type="button" />
 					</div>
 				</button>
+
 			</div>
 		</section>
 	</Form>
@@ -96,6 +96,7 @@
 <script setup>
 import errorMessages from '@/helpers/errorMessages'
 import successMessages from '@/helpers/successMessages'
+import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 import { Field, Form } from 'vee-validate'
 import { successAlert } from '@/services/AlertServices'
 import { computed, ref } from 'vue'
@@ -133,10 +134,10 @@ const registerUser = async () => {
 		const auth = getAuth();
 		const { email, password } = userSend.value
 		const { user } = await createUserWithEmailAndPassword(auth, email, password)
-		await addDoc(collection(firestore, PersonalInformation), {
+		sendEmailVerification(auth.currentUser)
+		addDoc(collection(firestore, PersonalInformation), {
 			userUID: user.uid,
 		});
-		await sendEmailVerification(auth.currentUser)
 		await successAlert({ reload: true, message: successMessages.registerSuccess })
 	} catch (error) {
 		console.error(error.code, error.message);
@@ -153,4 +154,3 @@ const clearErrorBackend = () => errorBackend.value = null
 const closeModal = () => emit('close-modal');
 
 </script>
-@/app/AlertServices@/app/schemas/AuthValidate

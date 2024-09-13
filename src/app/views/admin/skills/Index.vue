@@ -34,12 +34,7 @@
 			</div>
 
 			<!-- Loading -->
-			<div class="text-center py-4" v-else>
-				<div class="spinner-border" role="status">
-					<span class="visually-hidden"></span>
-				</div>
-				<p class="mt-1">Loading...</p>
-			</div>
+			<LoadComponentLayout v-else />
 
 
 			<!-- Modal -->
@@ -60,6 +55,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import { firestore } from "@/config/Firebase";
 import { deleteTime } from "@/services/TimestampService";
 import { deleteStatementAlert, successAlert } from '@/services/AlertServices'
+import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 
 
 

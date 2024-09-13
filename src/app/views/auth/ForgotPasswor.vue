@@ -24,16 +24,14 @@
 
 		<!-- Footer -->
 		<section class="d-flex justify-content-end">
-			<button type="button" class="btn btn-secondary mx-1 px-2" @click="closeModal" :disabled="loadSend"> Cancel
+			<button type="button" class="btn btn-secondary mx-1 px-2" @click="closeModal" v-if="!loadSend"> Cancel
 			</button>
-			<button type="sumbit" :class="`btn btn-primary ${loadSend ? 'px-1 py-0' : ''}`" :disabled="loadSend">
+			<button type="sumbit" class="btn btn-primary" :disabled="loadSend">
 				<span v-if="!loadSend">Send</span>
 				<div v-else>
-					<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-					<span role="status" class="ms-2">Loading</span>
+					<LoadComponentLayout type="button" />
 				</div>
 			</button>
-
 		</section>
 	</Form>
 </template>
@@ -48,6 +46,7 @@ import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
 import { emailValidate } from '@/app/schemas/AuthValidate'
 import { successAlert } from '@/services/AlertServices'
+import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 
 // Ref -------------------------------
 const RefRecaptcha = ref(null)

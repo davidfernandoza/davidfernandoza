@@ -13,7 +13,7 @@ const router = createRouter({
 			path: '/admin',
 			name: 'admin',
 			// beforeEnter: authMiddleware,
-			component: () => import('@/app/views/admin/Index.vue')
+			component: () => import('@/app/views/admin/dashboard/Index.vue')
 		},
 		{
 			path: '/admin/skills',
