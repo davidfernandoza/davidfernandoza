@@ -40,27 +40,15 @@
 				</section>
 			</section>
 
-
-
-
-
 		</section>
 	</section>
 </template>
 
 <script setup>
-import imageDefault from '@/helpers/ImagesDefaul.js'
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useAuthUser } from '@/stores/auth.js'
 import { getOne } from '@/services/QueryService'
 import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
-import country from 'country-list-js';
 
-
-const store = useAuthUser()
-const { user } = storeToRefs(store)
-const avatar = ref(user.value?.photoURL ?? imageDefault.avatar);
 
 // Variables --------------------------
 const loadAdminInformation = ref(false)
@@ -69,10 +57,8 @@ const adminInformation = ref({})
 const getInfoAdmin = async () => {
 	loadAdminInformation.value = false
 	const admin = await getOne({ model: 'adminInformation' })
-	console.log(admin);
 	adminInformation.value = admin
 	loadAdminInformation.value = true
-
 }
 
 getInfoAdmin()

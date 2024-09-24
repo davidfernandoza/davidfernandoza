@@ -151,7 +151,7 @@ import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 import { Field, Form } from 'vee-validate'
 import { successAlert } from '@/services/AlertServices'
 import { computed, ref } from 'vue'
-import { securityValidate } from '@/app/schemas/AuthValidate'
+import { securityValidate } from '@/app/schemas/AuthSchema'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
 import {
@@ -312,4 +312,4 @@ const closeModal = () => emit('close-modal');
 handlerTime();
 
 </script>
-@/app/AlertServices@/app/schemas/AuthValidate
+@/app/AlertServices@/app/schemas/AuthSchema@/app/schemas/AuthSchema

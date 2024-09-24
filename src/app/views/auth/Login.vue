@@ -76,7 +76,7 @@ import { Field, Form } from 'vee-validate'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
-import { loginValidate } from '@/app/schemas/AuthValidate'
+import { loginValidate } from '@/app/schemas/AuthSchema'
 import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 
 
@@ -125,4 +125,4 @@ const clearErrorBackend = () => errorBackend.value = null
 const closeModal = () => emit('close-modal');
 
 </script>
-@/app/schemas/AuthValidate
+@/app/schemas/AuthSchema@/app/schemas/AuthSchema

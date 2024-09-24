@@ -21,7 +21,9 @@ export const getOne = async ({ model, key, value }) => {
 export const getAll = async ({ model, key, value }) => {
 	let response = []
 	const data = await getDocs(
-		query(collection(firestore, model), where(key, '==', value), limit(1))
+		key && value
+			? query(collection(firestore, model), where(key, '==', value))
+			: query(collection(firestore, model))
 	)
 	data.forEach(doc => {
 		response.push({ id: doc.id, ...doc.data() })

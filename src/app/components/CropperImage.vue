@@ -33,6 +33,8 @@ const emit = defineEmits(['image-preview', 'cropper-open', 'canvas'])
 // Variables--------------------------
 const originalPhoto = ref(null)
 const canva = ref(null)
+const ratioWidthValidate = ratioWidth ?? 10
+const ratioHeightValidate = ratioHeight ?? 10
 
 // Modal -----------------------------
 const modalCropperRef = ref(null)
@@ -40,7 +42,7 @@ const optionsModalCropper = ref({
 	id: 'cropperModal',
 	have_heard: false
 })
-const optionsCropper = ref({ aspectRatio: ratioWidth ?? 10 / ratioHeight ?? 10 })
+const optionsCropper = ref({ aspectRatio: ratioWidthValidate / ratioHeightValidate })
 
 // Cropper Photo ---------------------
 

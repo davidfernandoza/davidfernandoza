@@ -41,7 +41,6 @@ const load_content = ref(false)
 
 // Wachers -----------------------------------
 watch(() => props.options.title, (newTitle, oldTitle) => {
-	console.log(newTitle);
 	title_validate.value = newTitle
 }, { deep: true });
 

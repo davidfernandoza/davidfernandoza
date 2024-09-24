@@ -28,6 +28,13 @@
 		left: 115px;
 		padding: .8rem;
 		border-radius: 50%;
+		&--square{
+			position: absolute;
+			padding: .8rem;
+			border-radius: 50%;
+			bottom: 0px;
+			left: 130px;
+		}
 	}
 }
 

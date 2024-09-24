@@ -144,7 +144,7 @@ const logout = async () => {
 		await signOut(auth)
 		window.location.href = '/'
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 }
 

@@ -14,4 +14,6 @@ export default {
 	errorSecurity: 'Error in server, please try again later',
 	// Profile ------------------------
 	inputProfile: 'Please fill all fields required'
+	// Skill --------------------------
+	
 }

@@ -44,7 +44,7 @@ import { Field, Form } from 'vee-validate'
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '@/config/Firebase'
 import { computed, ref } from 'vue'
-import { emailValidate } from '@/app/schemas/AuthValidate'
+import { emailValidate } from '@/app/schemas/AuthSchema'
 import { successAlert } from '@/services/AlertServices'
 import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 
@@ -90,4 +90,4 @@ const closeModal = () => {
 }
 
 </script>
-@/app/AlertServices@/app/schemas/AuthValidate
+@/app/AlertServices@/app/schemas/AuthSchema@/app/schemas/AuthSchema

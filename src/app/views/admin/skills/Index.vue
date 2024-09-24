@@ -15,93 +15,76 @@
 		<section class="card-body p-4">
 
 			<!-- Table -->
-			<div class="table-responsive" v-if="load_table">
-				<DataTable class="display table table-bordered table-hover table-striped table-wrap" :columns="columns"
-					:data="data" :options="options">
-					<template #column-0="prop">
-						<div class="d-flex justify-content-center">
-							<button @click="actionCLick(titles.update, prop.rowData)" class="btn btn-warning btn-sm"
-								:title="titles.update">
-								<i class="fas fa-pencil-alt"></i>
-							</button>
-							<button @click="actionCLick(titles.delete, prop.rowData)" class="btn btn-danger btn-sm mx-1"
-								:title="titles.delete">
-								<i class="fas fa-trash-alt"></i>
-							</button>
-						</div>
-					</template>
-				</DataTable>
-			</div>
+			<TableComponent v-if="loadTable" :data="data" :columns="columns" :options="options" :titles="titles"
+				@delete-register="deleteRegister" @edit-register="editRegister">
+			</TableComponent>
 
 			<!-- Loading -->
-			<LoadComponentLayout v-else />
+			<LoadComponentLayout v-else>
+			</LoadComponentLayout>
 
 
 			<!-- Modal -->
-			<Modal :options="optionsModal" ref="modal_ref">
-				<UserForm :user="user" ref="user_form_ref" @close-modal="modal_ref.closeModal()" @reload-table="getRegister"
-					:model="model">
-				</UserForm>
+			<Modal :options="optionsModal" ref="modalRef">
+				<SkillForm :skill="skill" @close-modal="modalRef.closeModal()" @reload-table="getRegister" :model="model">
+				</SkillForm>
 			</Modal>
 		</section>
 	</section>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import { getAll } from '@/services/QueryService'
-import UserForm from './UserForm.vue';
-import { updateDoc, doc } from "firebase/firestore";
-import { firestore } from "@/config/Firebase";
-import { deleteTime } from "@/services/TimestampService";
-import { deleteStatementAlert, successAlert } from '@/services/AlertServices'
+import SkillForm from './SkillForm.vue';
+import TableComponent from '@/app/components/TableComponent.vue'
 import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
+import { ref } from 'vue'
+import { getAll } from '@/services/QueryService'
+import { doc, deleteDoc } from "firebase/firestore";
+import { firestore } from "@/config/Firebase";
+import { deleteStatementAlert, successAlert } from '@/services/AlertServices'
+
 
 
 
 // Modal -------------------------------
-const modal_ref = ref(null)
+const modalRef = ref(null)
 const optionsModal = ref({
-	id: 'userModal',
+	id: 'skillModal',
 	title: null
 })
 
-// User Form ---------------------------
-const user_form_ref = ref(null) //no sirve
-const user = ref(null)
-const model = ref('users')
+// Skill Form ---------------------------
+const skill = ref(null)
+const model = ref('skillInformation')
 const titles = ref({
-	create: 'Create User',
-	update: 'Update User',
-	delete: 'Delete User'
+	create: 'Create Skill',
+	update: 'Update Skill',
+	delete: 'Delete Skill'
 })
 
 const createRegister = () => {
 	optionsModal.value.title = titles.value.create;
-	user.value = null;
-	modal_ref.value.openModal();
+	skill.value = null;
+	modalRef.value.openModal();
 }
 const editRegister = (data) => {
 	optionsModal.value.title = titles.value.update;
-	user.value = data;
-	modal_ref.value.openModal();
+	skill.value = data;
+	modalRef.value.openModal();
 }
 const deleteRegister = async (data) => {
 	if (!await deleteStatementAlert()) return
-	load_table.value = false
-	const data_send = deleteTime(data);
-	await updateDoc(doc(firestore, model.value, data.id), data_send);
-	await successAlert({ title: 'Deleted successfully!' })
-	getRegister();
+	loadTable.value = false
+	await deleteDoc(doc(firestore, model.value, data.id))
+	await successAlert({ reload: true, title: 'Deleted successfully!' })
 }
 
 // DataTable ----------------------------
-const data = ref([]);
-const load_table = ref(false);
-const dataArray = ref([])
+const loadTable = ref(false);
+const data = ref([])
 
 const exportOptions = {
-	columns: ':not(:first)'
+	columns: ':not(:nth-child(1)):not(:nth-child(2))',
 };
 const options = ref({
 	dom: 'Bfrtip',
@@ -118,56 +101,34 @@ const options = ref({
 	],
 })
 const columns = ref([
-	{ data: null, title: 'Actions' },
-	{ data: 'full_name', title: 'Full Name' },
-	{ data: 'email', title: 'Email' },
-	{ data: 'phone', title: 'Phone' },
-	{ data: 'role', title: 'Role' },
-	{ data: 'country', title: 'Country' },
-	{ data: 'created_at', title: 'Created at' },
-	{ data: 'updated_at', title: 'Updated at' },
+	{
+		data: null,
+		title: 'Actions',
+		className: 'text-center'
+	},
+	{
+		data: 'imageURL',
+		title: 'Image',
+		className: 'text-center',
+		render: (data) => `<img src="${data}" width="40" height="40" class="object-fit-cover border" />`
+	},
+	{
+		data: 'name',
+		title: 'Name',
+		className: 'text-center'
+	},
 ]);
 
+
+// Get data ------------------------------
 const getRegister = async () => {
-	load_table.value = false
-	dataArray.value = []
-
-	const dataFirebase = await getAll(model.value)
-	dataFirebase.forEach(doc => {
-		dataArray.value.push({ id: doc.id, ...doc.data() })
-	});
-	load_table.value = true
+	loadTable.value = false
 	data.value = []
-	data.value = dataArray.value
-	// setTimeout(() => {
-	// 	data.value = dataArray.value
-	// 	console.log(data.value);
-	// 	setTimeout(() => {
-	// 		data.value = []
-	// 		dataArray.value.splice(1, 1)
-	// 		setTimeout(() => {
-	// 			data.value = dataArray.value
-	// 		}, 9000);
-	// 	}, 9000);
-	// }, 9000);
-
+	const dataFirebase = await getAll({ model: model.value })
+	data.value = dataFirebase
+	loadTable.value = true
 }
-
-watch(() => dataArray.value, (newTitle, oldTitle) => {
-
-}, { deep: true });
-
-
-const actionCLick = (type, data) => {
-	if (type == titles.value.delete) {
-		deleteRegister(data)
-		return;
-	}
-	editRegister(data)
-	return
-};
 
 getRegister();
 
 </script>
-@/app/AlertServices

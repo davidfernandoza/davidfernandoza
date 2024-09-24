@@ -100,7 +100,7 @@ import LoadComponentLayout from '@/app/views/layouts/LoadComponentLayout.vue'
 import { Field, Form } from 'vee-validate'
 import { successAlert } from '@/services/AlertServices'
 import { computed, ref } from 'vue'
-import { registerValidate } from '@/app/schemas/AuthValidate'
+import { registerValidate } from '@/app/schemas/AuthSchema'
 import { firestore } from "@/config/Firebase"
 import { collection, addDoc } from "firebase/firestore"
 import { PersonalInformation } from '@/helpers/colectionNames'
@@ -154,3 +154,4 @@ const clearErrorBackend = () => errorBackend.value = null
 const closeModal = () => emit('close-modal');
 
 </script>
+@/app/schemas/AuthSchema

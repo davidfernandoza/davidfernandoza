@@ -166,7 +166,7 @@ const logout = async () => {
 		await signOut(auth)
 		window.location.reload()
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 }
 

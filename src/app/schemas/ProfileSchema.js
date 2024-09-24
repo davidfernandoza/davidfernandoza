@@ -6,7 +6,7 @@ let profile = {
 	country: yup.string().required().label('"Country"')
 }
 
-export const profileValidate = role => {
+export const ProfileValidate = role => {
 	if (role == 'admin') {
 		profile = {
 			...profile,

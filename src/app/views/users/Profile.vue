@@ -194,7 +194,7 @@ import { successAlert } from '@/services/AlertServices';
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthUser } from '@/stores/auth.js'
-import { profileValidate } from '@/app/schemas/ProfileValidate'
+import { ProfileValidate } from '@/app/schemas/ProfileSchema'
 import { uploadFile } from '@/services/FileServices'
 import { firestore } from "@/config/Firebase";
 import { updateDoc, doc } from "firebase/firestore";
@@ -212,7 +212,7 @@ const avatar = ref(user.value?.photoURL ?? imageDefault.avatar)
 
 
 // Computed --------------------------
-const schema = ref(profileValidate(user.value?.role))
+const schema = ref(ProfileValidate(user.value?.role))
 
 // Emits -----------------------------
 const emit = defineEmits(['close-modal'])
@@ -229,7 +229,6 @@ const canvas = ref(null)
 const userSend = ref({ ...user.value })
 const countries = ref(country.names());
 const errorBackend = ref(null)
-const adminData = ref(null)
 const coriculumVitae = ref(null)
 const loadAdminInformation = ref(false)
 const copyFeedback = ref({
@@ -271,7 +270,6 @@ const updateUser = async () => {
 
 const updateAdminInformation = async () => {
 	const objectToSend = {
-		personalInformationID: user.value.id,
 		github: userSend.value.github,
 		linkedin: userSend.value.linkedin,
 		prefixCode: userSend.value.prefixCode,

@@ -141,7 +141,6 @@ const getRegister = async () => {
 	data.value = dataArray.value
 	// setTimeout(() => {
 	// 	data.value = dataArray.value
-	// 	console.log(data.value);
 	// 	setTimeout(() => {
 	// 		data.value = []
 	// 		dataArray.value.splice(1, 1)

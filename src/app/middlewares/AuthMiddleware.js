@@ -10,7 +10,6 @@ export default (to, from, next) => {
 
 	return next()
 	auth.getData()
-	console.log(auth.state)
 	if (auth.state.api_token) {
 		/*
 		 * Usuario logueado
